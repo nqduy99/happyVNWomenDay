@@ -29,6 +29,15 @@ section{min-height:100vh;display:flex;flex-direction:column;align-items:center;j
 .hero h1{font-family:'Dancing Script',cursive;font-size:clamp(3rem,10vw,7rem);font-weight:700;line-height:1.1;
   background:linear-gradient(120deg,#c2386a,#e8788f 50%,#d9a566);-webkit-background-clip:text;background-clip:text;color:transparent;
   opacity:0;animation:rise 1.8s .8s forwards}
+#gate{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;
+  background:linear-gradient(180deg,#fde4ea 0%,#fbd1dd 40%,#c9a6d6 100%);transition:opacity 1.1s,visibility 1.1s}
+#gate.gone{opacity:0;visibility:hidden;pointer-events:none}
+.gate-inner{padding:24px}
+.env{font-size:4.5rem;animation:bob 2.2s infinite}
+.gate-title{font-size:clamp(1.8rem,6vw,2.6rem);color:#c2386a;margin:18px 0 28px}
+.gate-btn{display:inline-block;padding:12px 32px;border-radius:40px;color:#fff;letter-spacing:.2em;font-size:.85rem;text-transform:uppercase;
+  background:linear-gradient(120deg,#d9567e,#e8788f);box-shadow:0 8px 24px rgba(217,86,126,.45);animation:pulse 2s infinite}
+body:not(.open) .hero *{animation-play-state:paused}
 #music{position:fixed;right:22px;bottom:22px;z-index:10;width:56px;height:56px;padding:0;border-radius:50%;
   font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:#fff;
   background:linear-gradient(120deg,#d9567e,#e8788f);box-shadow:0 8px 24px rgba(217,86,126,.45)}
@@ -96,6 +105,13 @@ footer .heart{display:inline-block;color:#ff7aa2;animation:beat 1.4s infinite}
   <div class="date">20 · 10</div>
 </section>
 
+<div id="gate" role="button" tabindex="0">
+  <div class="gate-inner">
+    <div class="env">💌</div>
+    <div class="script gate-title">Có một điều bất ngờ dành cho bạn</div>
+    <div class="gate-btn">Chạm để mở</div>
+  </div>
+</div>
 <audio id="bgm" src="music/EmXinh.mp3" preload="auto"></audio>
 <button id="music" aria-label="Phát nhạc" title="Phát / dừng nhạc">🎵</button>
 
@@ -117,22 +133,16 @@ footer .heart{display:inline-block;color:#ff7aa2;animation:beat 1.4s infinite}
     if (a.paused) { seek(); a.play().catch(() => {}); } else a.pause();
   });
 
-  // Autoplay after ~1s. Browsers often block it, so fall back to the first tap/click/key.
-  const events = ['pointerdown', 'keydown', 'touchstart'];
-  const onFirst = (e) => {
-    if (b.contains(e.target)) return;
-    stopWaiting(); seek(); a.play().catch(() => {});
+  // Opening screen: the tap is the user gesture that lets the browser play sound.
+  const gate = document.getElementById('gate');
+  const open = () => {
+    document.body.classList.add('open');
+    seek(); a.play().catch(() => {});
+    gate.classList.add('gone');
+    setTimeout(() => gate.remove(), 1200);
   };
-  const stopWaiting = () => events.forEach(ev => removeEventListener(ev, onFirst));
-  let started = false;
-  const startWhenTextDone = () => {
-    if (started) return; started = true;
-    seek();
-    a.play().then(stopWaiting).catch(() => events.forEach(ev => addEventListener(ev, onFirst)));
-  };
-  // Wait for the last text (lời chúc) to finish fading in; timer is a fallback (e.g. reduced motion)
-  document.querySelector('.hero p').addEventListener('animationend', startWhenTextDone);
-  setTimeout(startWhenTextDone, 4000);
+  gate.addEventListener('click', open, { once: true });
+  gate.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); }, { once: true });
 })();
 
 // Falling petals
