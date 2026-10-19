@@ -131,9 +131,11 @@ footer .heart{display:inline-block;color:#ff7aa2;animation:beat 1.4s infinite}
 <script>
 // Background music, starts at 1:50
 (() => {
-  const a = document.getElementById('bgm'), b = document.getElementById('music'), START = 60.3;
+  const a = document.getElementById('bgm'), b = document.getElementById('music'), START = 60.4;
   const seek = () => { if (a.currentTime < START) a.currentTime = START; };
   a.addEventListener('loadedmetadata', seek);
+  // Some browsers (notably iOS Safari) ignore a seek made before the audio has data, so re-check once playback starts.
+  a.addEventListener('playing', () => { if (a.currentTime < START - 0.5) a.currentTime = START; });
   a.addEventListener('ended', () => { a.currentTime = START; a.play(); });
   const sync = () => {
     const on = !a.paused;
