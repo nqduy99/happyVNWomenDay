@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nhân ngày 20 - 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400&family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#4a2438; --rose:#d9567e; --blush:#f8d7e0; --cream:#fff6f3; --gold:#d9a566;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Be Vietnam Pro',sans-serif; color:var(--ink); font-weight:300;
+  background:linear-gradient(180deg,#fde4ea 0%,#fbd1dd 28%,#e9b9d3 60%,#b99ad0 100%);
+  background-attachment:fixed; overflow-x:hidden;
+}
+canvas#petals{position:fixed;inset:0;pointer-events:none;z-index:5}
+section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:80px 24px;position:relative;z-index:2}
+.script{font-family:'Dancing Script',cursive}
+.serif{font-family:'Playfair Display',serif}
+
+/* hero */
+.hero .date{position:absolute;bottom:44px;left:0;right:0;letter-spacing:.45em;text-indent:.45em;font-size:.8rem;text-transform:uppercase;color:var(--rose);opacity:0;animation:rise 1.6s 2.4s forwards}
+.hero .date::before{content:"";display:block;width:1px;height:48px;margin:0 auto 18px;background:linear-gradient(transparent,var(--rose))}
+.hero h1{font-family:'Dancing Script',cursive;font-size:clamp(3rem,10vw,7rem);font-weight:700;line-height:1.1;
+  background:linear-gradient(120deg,#c2386a,#e8788f 50%,#d9a566);-webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:0;animation:rise 1.8s .8s forwards}
+#music{position:fixed;right:22px;bottom:22px;z-index:10;width:56px;height:56px;padding:0;border-radius:50%;
+  font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:#fff;
+  background:linear-gradient(120deg,#d9567e,#e8788f);box-shadow:0 8px 24px rgba(217,86,126,.45)}
+#music.on{animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 14px rgba(217,86,126,.18),0 8px 24px rgba(217,86,126,.45)}}
+.hero h1{padding-bottom:.15em}
+.hero p{margin-top:48px;max-width:520px;font-family:'Playfair Display',serif;font-style:italic;font-size:1.2rem;line-height:1.9;opacity:0;animation:rise 1.8s 1.6s forwards}
+.scroll{position:absolute;bottom:34px;font-size:.75rem;letter-spacing:.3em;color:var(--rose);animation:bob 2.4s infinite;text-decoration:none}
+.moon{position:absolute;top:8%;right:10%;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fffbe9,#f9e2b4);box-shadow:0 0 80px 30px rgba(255,236,190,.55);animation:glow 6s ease-in-out infinite}
+
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes bob{50%{transform:translateY(8px)}}
+@keyframes glow{50%{box-shadow:0 0 110px 45px rgba(255,236,190,.7)}}
+
+/* poem */
+.poem .card{max-width:620px;padding:56px 44px;border-radius:28px;background:rgba(255,255,255,.45);
+  backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);box-shadow:0 20px 60px rgba(160,70,110,.18)}
+.poem h2{font-size:2.4rem;color:var(--rose);margin-bottom:30px}
+.poem .line{font-family:'Playfair Display',serif;font-style:italic;font-size:1.2rem;line-height:2.1}
+.poem .gap{height:18px}
+.orn{color:var(--gold);letter-spacing:.6em;margin:22px 0 0}
+
+/* wishes */
+.wishes h2{font-size:2.6rem;color:#fff;text-shadow:0 2px 20px rgba(150,60,110,.4);margin-bottom:48px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;max-width:960px;width:100%}
+.wish{padding:36px 28px;border-radius:24px;background:rgba(255,255,255,.55);backdrop-filter:blur(8px);
+  box-shadow:0 14px 40px rgba(120,50,100,.18);transition:transform .5s,box-shadow .5s}
+.wish:hover{transform:translateY(-10px);box-shadow:0 24px 60px rgba(120,50,100,.28)}
+.wish .ic{font-size:2.4rem;display:block;margin-bottom:14px}
+.wish h3{font-family:'Playfair Display',serif;font-weight:600;font-size:1.25rem;margin-bottom:12px;color:#a62f5c}
+.wish p{line-height:1.8;font-size:.95rem}
+
+/* personal */
+.personal h2{font-size:2.4rem;color:#fff;text-shadow:0 2px 20px rgba(120,50,110,.4);margin-bottom:12px}
+.personal .hint{color:#fff;opacity:.9;margin-bottom:28px}
+.form{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+input{font:inherit;padding:14px 22px;border-radius:40px;border:none;min-width:240px;outline:none;background:rgba(255,255,255,.85);color:var(--ink);text-align:center}
+button{font:inherit;cursor:pointer;padding:14px 30px;border:none;border-radius:40px;color:#fff;
+  background:linear-gradient(120deg,#d9567e,#e8788f);box-shadow:0 8px 24px rgba(217,86,126,.45);transition:transform .3s}
+button:hover{transform:scale(1.06)}
+.letter{margin-top:40px;max-width:560px;padding:44px 38px;border-radius:6px 28px 6px 28px;background:var(--cream);
+  box-shadow:0 20px 50px rgba(90,40,90,.3);opacity:0;transform:translateY(30px) rotate(-1deg);transition:all 1.2s;display:none}
+.letter.show{opacity:1;transform:none}
+.letter .to{font-size:2rem;color:var(--rose);margin-bottom:16px}
+.letter p{font-family:'Playfair Display',serif;font-style:italic;line-height:2;font-size:1.05rem}
+.letter .sign{margin-top:18px;font-size:1.5rem;color:var(--gold)}
+
+footer{position:relative;z-index:2;text-align:center;padding:50px 20px 70px;color:#fff;font-family:'Playfair Display',serif;font-style:italic}
+footer .heart{display:inline-block;color:#ff7aa2;animation:beat 1.4s infinite}
+@keyframes beat{15%{transform:scale(1.35)}30%{transform:scale(1)}45%{transform:scale(1.25)}}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1.3s,transform 1.3s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal,.hero *{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+<canvas id="petals"></canvas>
+
+<section class="hero">
+  <div class="moon"></div>
+  <h1>Nhân ngày 20 - 10...</h1>
+  <p>Chúc Minh Anh tiểu cường cute<br>Luôn vui vẻ, tự tin và rực rỡ như những bông hoa <br> bởi vì bạn đã là một bông hoa giữa nhân gian rồi.</p>
+  <div class="date">20 · 10</div>
+</section>
+
+<audio id="bgm" src="music/EmXinh.mp3" preload="auto"></audio>
+<button id="music" aria-label="Phát nhạc" title="Phát / dừng nhạc">🎵</button>
+
+<script>
+// Background music, starts at 1:50
+(() => {
+  const a = document.getElementById('bgm'), b = document.getElementById('music'), START = 60.3;
+  const seek = () => { if (a.currentTime < START) a.currentTime = START; };
+  a.addEventListener('loadedmetadata', seek);
+  a.addEventListener('ended', () => { a.currentTime = START; a.play(); });
+  const sync = () => {
+    const on = !a.paused;
+    b.classList.toggle('on', on);
+    b.textContent = on ? '⏸' : '🎵';
+    b.setAttribute('aria-label', on ? 'Dừng nhạc' : 'Phát nhạc');
+  };
+  a.addEventListener('play', sync); a.addEventListener('pause', sync);
+  b.addEventListener('click', () => {
+    if (a.paused) { seek(); a.play().catch(() => {}); } else a.pause();
+  });
+
+  // Autoplay after ~1s. Browsers often block it, so fall back to the first tap/click/key.
+  const events = ['pointerdown', 'keydown', 'touchstart'];
+  const onFirst = (e) => {
+    if (b.contains(e.target)) return;
+    stopWaiting(); seek(); a.play().catch(() => {});
+  };
+  const stopWaiting = () => events.forEach(ev => removeEventListener(ev, onFirst));
+  let started = false;
+  const startWhenTextDone = () => {
+    if (started) return; started = true;
+    seek();
+    a.play().then(stopWaiting).catch(() => events.forEach(ev => addEventListener(ev, onFirst)));
+  };
+  // Wait for the last text (lời chúc) to finish fading in; timer is a fallback (e.g. reduced motion)
+  document.querySelector('.hero p').addEventListener('animationend', startWhenTextDone);
+  setTimeout(startWhenTextDone, 4000);
+})();
+
+// Falling petals
+(() => {
+  const c = document.getElementById('petals'), x = c.getContext('2d');
+  let w, h, petals = [];
+  const resize = () => { w = c.width = innerWidth; h = c.height = innerHeight; };
+  addEventListener('resize', resize); resize();
+  const cols = ['#ffb3c7','#ff8fb0','#ffd1dc','#f9a8c9','#ffe3ea'];
+  const make = (top) => ({
+    x: Math.random()*w, y: top ? -20 : Math.random()*h,
+    s: 6+Math.random()*10, vy: .5+Math.random()*1.1, vx: -.3+Math.random()*.6,
+    r: Math.random()*6.28, vr: (Math.random()-.5)*.03, sw: Math.random()*6.28,
+    col: cols[Math.floor(Math.random()*cols.length)], a: .55+Math.random()*.4
+  });
+  const count = Math.min(70, Math.floor(w/18));
+  for (let i=0;i<count;i++) petals.push(make(false));
+  let mx = 0;
+  addEventListener('mousemove', e => mx = (e.clientX/w - .5)*1.2);
+  function draw(){
+    x.clearRect(0,0,w,h);
+    for (const p of petals){
+      p.sw += .02; p.y += p.vy; p.x += p.vx + Math.sin(p.sw)*.6 + mx; p.r += p.vr;
+      if (p.y > h+20 || p.x < -30 || p.x > w+30) Object.assign(p, make(true));
+      x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.globalAlpha = p.a; x.fillStyle = p.col;
+      x.beginPath();
+      x.moveTo(0,-p.s);
+      x.bezierCurveTo(p.s,-p.s*.6,p.s*.8,p.s*.7,0,p.s);
+      x.bezierCurveTo(-p.s*.8,p.s*.7,-p.s,-p.s*.6,0,-p.s);
+      x.fill(); x.restore();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// Scroll reveal
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), {threshold:.2});
+document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDelay = (i%3)*.15+'s'; io.observe(el); });
+
+</script>
+</body>
+</html>
